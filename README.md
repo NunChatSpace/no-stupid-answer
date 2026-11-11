@@ -75,13 +75,14 @@ Agent ประมวลผลและตอบ
 
 แก้ `plugins/no-stupid-answer/prompts/before-answer.txt` และเพิ่ม `version` ใน `plugin.json` ก่อนเผยแพร่รุ่นใหม่ อย่าแก้ไฟล์ใน installed cache โดยตรง
 
-ผู้ใช้ refresh marketplace ได้ด้วย:
+ผู้ใช้อัปเดตได้ด้วยสองคำสั่งนี้ โดยคำสั่งแรกดึงข้อมูล marketplace ล่าสุด และคำสั่งที่สองติดตั้ง plugin จากข้อมูลล่าสุดนั้น:
 
 ```sh
 codex plugin marketplace upgrade no-stupid-answer
+codex plugin add no-stupid-answer@no-stupid-answer
 ```
 
-จากนั้นอัปเดต plugin ผ่าน client เปิด session ใหม่ และ review/Trust อีกครั้งหากระบบร้องขอ
+จากนั้นเปิด session ใหม่ และ review/Trust อีกครั้งหากระบบร้องขอ
 
 ## ขอบเขตการแจก
 
