@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "no-stupid-answer",
+  "version": "0.1.0",
+  "description": "Inject a concise reminder to assess evidence before answering and avoid reflexive agreement.",
+  "author": {
+    "name": "NunChatSpace"
+  },
+  "repository": "https://github.com/NunChatSpace/no-stupid-answer",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "interface": {
+        "displayName": "No Stupid Answer",
+        "shortDescription": "Evidence before agreement",
+        "longDescription": "Adds a UserPromptSubmit reminder to check assumptions, disagree when evidence warrants it, and explain changes in conclusions.",
+        "developerName": "NunChatSpace",
+        "category": "Productivity",
+        "capabilities": ["Read"]
+      }
+    }
+  }
+}
