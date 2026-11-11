@@ -73,7 +73,7 @@ Agent ประมวลผลและตอบ
 
 ## แก้กฎและอัปเดต
 
-แก้ `plugins/no-stupid-answer/prompts/before-answer.txt` และเพิ่ม `version` ใน `plugin.json` ก่อนเผยแพร่รุ่นใหม่ อย่าแก้ไฟล์ใน installed cache โดยตรง
+แก้ `plugins/no-stupid-answer/prompts/before-answer.txt` และเพิ่ม `version` ใน `plugins/no-stupid-answer/.codex-plugin/plugin.json` ก่อนเผยแพร่รุ่นใหม่ อย่าแก้ไฟล์ใน installed cache โดยตรง
 
 ผู้ใช้อัปเดตได้ด้วยสองคำสั่งนี้ โดยคำสั่งแรกดึงข้อมูล marketplace ล่าสุด และคำสั่งที่สองติดตั้ง plugin จากข้อมูลล่าสุดนั้น:
 
@@ -83,6 +83,12 @@ codex plugin add no-stupid-answer@no-stupid-answer
 ```
 
 จากนั้นเปิด session ใหม่ และ review/Trust อีกครั้งหากระบบร้องขอ
+
+## ติดตั้งแล้วแต่ไม่เห็น hook
+
+รุ่น `0.1.0` และ `0.1.1` ใช้ portable manifest ที่ root ซึ่งตัวโหลด Codex ข้าม plugin hooks จึงอาจติดตั้งสำเร็จแต่ไม่ปรากฏใน `/hooks` อัปเดตเป็น `0.1.2` ขึ้นไปด้วยสองคำสั่งข้างต้น แล้วเปิด session ใหม่
+
+แพ็กเกจนี้ใช้ Codex compatibility manifest ที่ `.codex-plugin/plugin.json` เพื่อให้โหลด hooks ได้ อย่าเพิ่ม portable `plugin.json` ที่ root ของ plugin โดยไม่ทดสอบการค้นหา hooks กับ Codex รุ่นที่ใช้งานจริง
 
 ## ขอบเขตการแจก
 
