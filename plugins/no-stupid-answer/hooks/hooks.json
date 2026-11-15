@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat \"${PLUGIN_ROOT}/prompts/before-answer.txt\"",
+            "command": "node -e \"process.stdout.write(require('node:fs').readFileSync(require('node:path').join(process.env.PLUGIN_ROOT, 'prompts', 'before-answer.txt'), 'utf8'))\"",
             "timeout": 3
           }
         ]

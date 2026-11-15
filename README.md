@@ -18,7 +18,12 @@ Codex plugin ที่แทรกคำสั่งสั้น ๆ ก่อ�
 
 ## ติดตั้ง
 
-ต้องใช้ Codex รุ่นที่รองรับ plugin marketplaces และ `UserPromptSubmit` command hooks ตัว hook นี้ใช้ `cat` จึงออกแบบสำหรับ macOS/Linux
+รองรับ Windows, macOS และ Linux โดยต้องมี:
+
+- Codex รุ่นที่รองรับ plugin marketplaces และ `UserPromptSubmit` command hooks
+- Node.js 22 ขึ้นไป โดย process ที่รัน Codex ต้องเรียก `node` จาก `PATH` ได้ ตรวจด้วย `node --version` และเปิด Codex ใหม่หลังติดตั้งหรือแก้ `PATH`
+
+Hook ใช้ Node.js อ่านไฟล์ UTF-8 ผ่าน `process.env.PLUGIN_ROOT` โดยตรง จึงไม่ต้องใช้ `cat`, Bash, WSL หรือ PowerShell profile และรองรับโฟลเดอร์ที่มีช่องว่างหรืออักษรไทย
 
 หลังไฟล์ใน repo นี้ถูกเผยแพร่บน GitHub:
 
@@ -49,7 +54,7 @@ codex plugin add no-stupid-answer@no-stupid-answer
 ```text
 ผู้ใช้ส่งข้อความ
     ↓
-UserPromptSubmit เรียก cat อ่าน prompts/before-answer.txt
+UserPromptSubmit เรียก Node.js อ่าน prompts/before-answer.txt
     ↓
 Codex เพิ่มข้อความนั้นเป็น developer context
     ↓
@@ -71,6 +76,18 @@ Agent ประมวลผลและตอบ
 
 ชุดนี้เป็นเพียง smoke test ด้านพฤติกรรม ไม่ใช่หลักฐานว่า agent จะทำตามทุกงาน
 
+## ทดสอบคำสั่ง hook
+
+รันจาก root ของ repo โดยไม่ต้องติดตั้ง npm dependencies:
+
+```sh
+node --test tests/hooks.test.cjs
+```
+
+การทดสอบเรียกคำสั่งจริงจาก `hooks.json` ผ่าน Windows PowerShell และ cmd บน Windows หรือ `/bin/sh` บน macOS/Linux โดยตรวจโฟลเดอร์ที่มีช่องว่าง/อักษรไทย/อักขระพิเศษ, working directory อื่น, ข้อความ UTF-8 และกรณีไม่มี `PLUGIN_ROOT` หรือไฟล์คำสั่ง คำสั่งที่ล้มเหลวต้องไม่ปล่อยข้อความบน stdout ไปเป็น context
+
+GitHub Actions รันชุดเดียวกันบน Windows, macOS และ Linux การทดสอบนี้ตรวจการอ่านและส่งข้อความของ hook ส่วนการโหลด/Trust hook ใน Codex และพฤติกรรมของโมเดลยังต้องตรวจตามขั้นตอนข้างต้น
+
 ## แก้กฎและอัปเดต
 
 แก้ `plugins/no-stupid-answer/prompts/before-answer.txt` และเพิ่ม `version` ใน `plugins/no-stupid-answer/.codex-plugin/plugin.json` ก่อนเผยแพร่รุ่นใหม่ อย่าแก้ไฟล์ใน installed cache โดยตรง
@@ -85,6 +102,8 @@ codex plugin add no-stupid-answer@no-stupid-answer
 จากนั้นเปิด session ใหม่ และ review/Trust อีกครั้งหากระบบร้องขอ
 
 ## ติดตั้งแล้วแต่ไม่เห็น hook
+
+หาก Windows รุ่นก่อนหน้านี้แจ้งว่าไม่พบ `cat` หรืออ่าน path ผิด ให้อัปเดตเป็น `0.1.3` ขึ้นไป ตรวจว่า `node --version` ใช้งานได้ แล้วเปิด Codex session ใหม่และ review/Trust hook ที่เปลี่ยน
 
 รุ่น `0.1.0` และ `0.1.1` ใช้ portable manifest ที่ root ซึ่งตัวโหลด Codex ข้าม plugin hooks จึงอาจติดตั้งสำเร็จแต่ไม่ปรากฏใน `/hooks` อัปเดตเป็น `0.1.2` ขึ้นไปด้วยสองคำสั่งข้างต้น แล้วเปิด session ใหม่
 

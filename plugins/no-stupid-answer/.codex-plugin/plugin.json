@@ -1,6 +1,6 @@
 {
   "name": "no-stupid-answer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Inject a concise reminder to assess evidence before answering and avoid reflexive agreement.",
   "author": {
     "name": "NunChatSpace"
